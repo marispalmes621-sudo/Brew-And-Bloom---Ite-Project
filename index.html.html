@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brew & Bloom Coffee Shop </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --brown: #5B3828;
+      --tan: #B77950;
+      --cream: #FFF9F2;
+      --soft-green: #DCE5D3;
+      --text-dark: #35251E;
+      --text-light: #79665B;
+      --white: #FFFFFF;
+      --rose: #EAD2C7;
+      --latte: #F2E3D5;
+    }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      height: 80px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 250, 243, 0.97);
+      border-bottom: 2px solid var(--soft-green);
+      box-shadow: 0 5px 22px rgba(74,55,40,.05);
+      position: relative;
+      z-index: 10;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--brown);
+    }
+    .logo span {
+      color: var(--tan);
+    }
+    .project-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--tan);
+      margin-left: 12px;
+      white-space: nowrap;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    nav button {
+      border: none;
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 8px 0;
+      transition: 0.3s;
+    }
+    nav button:hover,
+    nav button.active {
+      color: var(--brown);
+      border-bottom: 2px solid var(--tan);
+    }
+    main {
+      height: calc(100vh - 145px);
+      height: calc(100svh - 145px);
+      position: relative;
+      overflow: hidden;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 30px 7%;
+      display: none;
+      overflow-y: auto;
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(15px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .eyebrow {
+      color: var(--tan);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+    h1 {
+      font-size: clamp(32px, 5vw, 55px);
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+    h2 {
+      font-size: clamp(26px, 4vw, 38px);
+      margin-bottom: 12px;
+    }
+    p {
+      color: var(--text-light);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    .btn {
+      border: none;
+      background: var(--brown);
+      color: white;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: var(--tan);
+    }
+    /* HOME */
+    .home {
+      background:
+        linear-gradient(90deg, rgba(74, 55, 40, 0.75), rgba(107, 78, 60, 0.25)),
+        url('https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1800&q=85')
+        center/cover no-repeat;
+      justify-content: center;
+      color: white;
+      padding-top: 50px;
+    }
+    .home .eyebrow {
+      color: #F2D6B9;
+    }
+    .home p {
+      color: #FFEED8;
+      max-width: 420px;
+      margin-bottom: 25px;
+    }
+    .home .btn {
+      background: #E8C285;
+      color: var(--brown);
+    }
+    .home .btn:hover {
+      background: white;
+    }
+    /* ABOUT */
+    .about-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .about-image {
+      height: 320px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 12px 12px 0 var(--soft-green);
+    }
+    .about-text p {
+      margin: 12px 0 20px;
+    }
+    .mini-stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .mini-stats strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--brown);
+    }
+    /* MENU */
+    .menu-toolbar { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px; margin: 0 auto 22px; max-width:950px; }
+    .menu-filter { border:1px solid #d9c3ae; background:#fffaf3; color:var(--brown); border-radius:999px; padding:9px 16px; font:inherit; font-size:12px; font-weight:700; cursor:pointer; transition:.25s; }
+    .menu-filter:hover, .menu-filter.active { background:var(--brown); color:white; border-color:var(--brown); }
+    .menu-search { border:1px solid #e0d2c3; background:white; color:var(--text-dark); border-radius:999px; padding:10px 15px; font:inherit; font-size:13px; min-width:190px; outline:none; }
+    .menu-search:focus { border-color:var(--tan); box-shadow:0 0 0 3px #a67c5220; }
+    .menu-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; padding-bottom:25px; }
+    .menu-card { border:1px solid #f0e6dc; border-radius:15px; box-shadow:0 8px 22px rgba(74,55,40,.07); }
+    .menu-card img { height:155px; width:100%; display:block; object-fit:cover; object-position:center; transition:transform .4s; }
+    .menu-card:hover img { transform:scale(1.04); }
+    .menu-image-wrap { overflow:hidden; position:relative; }
+    .menu-tag { position:absolute; top:11px; left:11px; background:#fffaf3ed; color:var(--brown); padding:5px 9px; border-radius:999px; font-size:10px; font-weight:700; letter-spacing:.4px; }
+    .menu-info { padding:16px; }
+    .menu-info p { font-size:12px; line-height:1.5; min-height:36px; }
+    .menu-info h3 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .price { font-size:15px; }
+    .menu-card[hidden] { display:none; }
+    .menu-empty { display:none; text-align:center; color:var(--text-light); padding:25px; grid-column:1/-1; }
+    .menu-empty.show { display:block; }
+    .slide-heading {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    .menu-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(74, 55, 40, 0.06);
+      transition: 0.3s;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+    }
+    .menu-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+    .menu-info {
+      padding: 15px;
+    }
+    .menu-info h3 {
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+    .price {
+      display: block;
+      color: var(--tan);
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      padding: 4px 2px 18px;
+    }
+    .gallery-card {
+      position: relative;
+      min-height: 185px;
+      height: clamp(185px, 20vw, 245px);
+      overflow: hidden;
+      border-radius: 16px;
+      background: var(--latte);
+      box-shadow: 0 8px 24px rgba(68, 42, 29, .11);
+      isolation: isolate;
+    }
+    .gallery-card:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+      height: auto;
+      min-height: 390px;
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .55s ease, filter .4s ease;
+    }
+    .gallery-card::after {
+      content: '';
+      position: absolute;
+      inset: 30% 0 0;
+      background: linear-gradient(transparent, rgba(39, 24, 17, .78));
+      z-index: 1;
+      pointer-events: none;
+    }
+    .gallery-card:hover img { transform: scale(1.07); filter: saturate(1.08); }
+    .gallery-caption {
+      position: absolute;
+      z-index: 2;
+      left: 16px;
+      right: 12px;
+      bottom: 15px;
+      color: #fffaf4;
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 600;
+      text-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
+    .gallery-caption small {
+      display: block;
+      margin-top: 3px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #F5DCC8;
+    }
+    .slide-heading p { max-width: 540px; margin: 0 auto; }
+    .slide-heading { margin-bottom: 28px; }
+    h1, h2 { letter-spacing: -.7px; }
+    h3 { letter-spacing: -.2px; }
+    .eyebrow { color: #A9663F; letter-spacing: 2.4px; }
+    nav button { font-family: 'Manrope', sans-serif; font-weight: 700; }
+    .menu-card { border: 1px solid rgba(183,121,80,.12); }
+    .menu-card:hover { box-shadow: 0 14px 30px rgba(74, 47, 32, .13); }
+    .price { color: #A9663F; }
+    /* CONTACT */
+    .contact-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .contact-details {
+      margin-top: 20px;
+      display: grid;
+      gap: 15px;
+    }
+    .contact-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .contact-icon {
+      background: var(--soft-green);
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .contact-form {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(74, 55, 40, 0.06);
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #E0D2C3;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      background: #FFFAF3;
+    }
+    .contact-form textarea {
+      height: 80px;
+    }
+    /* DOCUMENTATION — SIMPLE */
+    .doc-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .doc-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 10px;
+      font-family: 'Playfair Display', serif;
+    }
+    .doc-subtitle {
+      font-size: 14px;
+      color: var(--tan);
+      margin-bottom: 25px;
+    }
+    .doc-photo {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(74, 55, 40, 0.15);
+      margin-bottom: 25px;
+      object-fit: cover;
+    }
+    .doc-names {
+      display: flex;
+      gap: 50px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .doc-student {
+      padding: 10px 20px;
+    }
+    .doc-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 4px;
+    }
+    .doc-role {
+      font-size: 13px;
+      color: var(--tan);
+    }
+    /* FOOTER */
+    footer {
+      height: 67px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F5E9DA;
+      border-top: 1px solid #E0D2C3;
+    }
+    .slide-count {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .progress {
+      display: flex;
+      gap: 7px;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      background: #D1B9A8;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: var(--brown);
+      width: 22px;
+      border-radius: 5px;
+    }
+    .slide-buttons button {
+      padding: 9px 15px;
+      border-radius: 6px;
+      border: 1px solid var(--tan);
+      background: transparent;
+      color: var(--brown);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .slide-buttons button:hover:not(:disabled) {
+      background: var(--brown);
+      color: white;
+    }
+    .slide-buttons button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    @media (max-width: 700px) {
+      header {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 12px 5%;
+      }
+      .about-layout, .contact-layout {
+        grid-template-columns: 1fr;
+      }
+      .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; }
+      .menu-card img { height:120px; }
+      .menu-info { padding:12px; }
+      .menu-info h3 { font-size:15px; }
+      .menu-search { width:100%; }
+      nav { gap:10px; flex-wrap:wrap; justify-content:center; }
+      .project-label { display:none; }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+      .gallery-card { height: 185px; min-height: 185px; border-radius: 12px; }
+      .gallery-card:first-child { grid-column: span 2; grid-row: auto; height: 250px; min-height: 250px; }
+      .gallery-caption { left: 11px; bottom: 11px; font-size: 16px; }
+      .gallery-caption small { font-size: 9px; letter-spacing: 1px; }
+      .doc-names {
+        gap: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <div class="logo">Brew <span>&</span> Bloom ☕</div>
+    </div>
+    <nav>
+      <button class="nav-link active" data-slide="0">Home</button>
+      <button class="nav-link" data-slide="1">About</button>
+      <button class="nav-link" data-slide="2">Menu</button>
+      <button class="nav-link" data-slide="3">Gallery</button>
+      <button class="nav-link" data-slide="4">Contact</button>
+      <button class="nav-link" data-slide="5">Documentation</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- SLIDE 1: HOME -->
+    <section class="slide home active">
+      <div class="eyebrow">Your daily cup of happiness</div>
+      <h1>Good Coffee.<br>Good Mood.<br>Good Moments.</h1>
+      <p>Take a break from your busy day and enjoy freshly brewed coffee in a cozy place made for good conversations and happy moments.</p>
+      <button class="btn" onclick="goToSlide(2)">Explore Our Menu →</button>
+    </section>
+
+    <!-- SLIDE 2: ABOUT -->
+    <section class="slide">
+      <div class="about-layout">
+        <div>
+          <img class="about-image" src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=900&q=85" alt="Freshly prepared coffee">
+        </div>
+        <div class="about-text">
+          <div class="eyebrow">A little about us</div>
+          <h2>More Than Just Coffee</h2>
+          <p>Brew & Bloom is a cozy coffee shop made for people who love good coffee and relaxing moments. We want every customer to feel welcome, whether studying, working, or with friends.</p>
+          <p>We serve coffee and delicious treats prepared with care. Our goal is simple: to make your day a little better, one cup at a time.</p>
+          <div class="mini-stats">
+            <div><strong>Fresh</strong><span>Every cup</span></div>
+            <div><strong>Cozy</strong><span>Every visit</span></div>
+            <div><strong>Made</strong><span>With care</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: MENU -->
+    <section class="slide">
+      <div class="slide-heading">
+        <div class="eyebrow">Made fresh, served with love ☕</div>
+        <h2>Something Good for You</h2>
+        <p>From your favorite coffee to sweet little treats, find your new go-to.</p>
+      </div>
+      <div class="menu-toolbar" aria-label="Menu filters">
+        <button class="menu-filter active" data-category="all">All Favorites</button>
+        <button class="menu-filter" data-category="coffee">☕ Coffee</button>
+        <button class="menu-filter" data-category="noncoffee">🍵 Non-Coffee</button>
+        <button class="menu-filter" data-category="pastry">🥐 Pastries & Desserts</button>
+        <input class="menu-search" id="menuSearch" type="search" placeholder="Search the menu..." aria-label="Search menu">
+      </div>
+      <div class="menu-grid" id="menuGrid">
+        <div class="menu-card" data-category="coffee" data-name="iced latte"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=90" alt="Iced latte"><span class="menu-tag">BESTSELLER</span></div><div class="menu-info"><h3>Iced Latte</h3><p>Smooth espresso and creamy milk over ice.</p><span class="price">₱120</span></div></div>
+        <div class="menu-card" data-category="coffee" data-name="hot americano"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=700&q=90" alt="Hot Americano"><span class="menu-tag">CLASSIC</span></div><div class="menu-info"><h3>Hot Americano</h3><p>Bold espresso with a clean, rich finish.</p><span class="price">₱95</span></div></div>
+        <div class="menu-card" data-category="coffee" data-name="cappuccino"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=700&q=90" alt="Cappuccino"></div><div class="menu-info"><h3>Cappuccino</h3><p>Espresso topped with soft, creamy milk foam.</p><span class="price">₱130</span></div></div>
+        <div class="menu-card" data-category="coffee" data-name="caramel latte"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=90" alt="Caramel latte"><span class="menu-tag">SWEET PICK</span></div><div class="menu-info"><h3>Caramel Latte</h3><p>A cozy latte with a sweet caramel swirl.</p><span class="price">₱145</span></div></div>
+        <div class="menu-card" data-category="coffee" data-name="mocha frappe"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=700&q=90" alt="Mocha frappe"></div><div class="menu-info"><h3>Mocha Frappe</h3><p>Blended coffee and chocolate for a cool treat.</p><span class="price">₱155</span></div></div>
+        <div class="menu-card" data-category="coffee" data-name="spanish latte"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=90" alt="Spanish latte"></div><div class="menu-info"><h3>Spanish Latte</h3><p>Espresso balanced with rich, sweet milk.</p><span class="price">₱145</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="matcha latte"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=700&q=90" alt="Matcha latte"><span class="menu-tag">FAN FAVORITE</span></div><div class="menu-info"><h3>Matcha Latte</h3><p>Earthy green tea blended with creamy milk.</p><span class="price">₱140</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="strawberry milk"><div class="menu-image-wrap"><img src="straw.jpg" alt="Strawberry milk drink"></div><div class="menu-info"><h3>Strawberry Milk</h3><p>Sweet strawberry flavor with chilled milk.</p><span class="price">₱125</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="chocolate milk"><div class="menu-image-wrap"><img src="iced.jpg" alt="Iced chocolate"></div><div class="menu-info"><h3>Iced Chocolate</h3><p>Chocolatey, creamy, and extra refreshing.</p><span class="price">₱120</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="chocolate cake"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=90" alt="Chocolate cake"><span class="menu-tag">SWEET TREAT</span></div><div class="menu-info"><h3>Chocolate Cake</h3><p>Soft chocolate layers for your little break.</p><span class="price">₱110</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="butter croissant"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=700&q=90" alt="Butter croissant"></div><div class="menu-info"><h3>Butter Croissant</h3><p>Flaky, buttery pastry baked until golden.</p><span class="price">₱85</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="blueberry cheesecake"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=700&q=90" alt="Cheesecake"></div><div class="menu-info"><h3>Blueberry Cheesecake</h3><p>Creamy cheesecake with a fruity topping.</p><span class="price">₱135</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="cinnamon roll"><div class="menu-image-wrap"><img src="https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=700&q=90" alt="Cinnamon roll"></div><div class="menu-info"><h3>Cinnamon Roll</h3><p>Soft swirl pastry with cinnamon sweetness.</p><span class="price">₱95</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="banana bread"><div class="menu-image-wrap"><img src="Banana Bread 😋.jpg" alt="Banana bread"></div><div class="menu-info"><h3>Banana Bread</h3><p>A soft, comforting slice to pair with coffee.</p><span class="price">₱75</span></div></div>
+        <!-- More non-coffee favorites -->
+        <div class="menu-card" data-category="noncoffee" data-name="iced vanilla matcha"><div class="menu-image-wrap"><img loading="lazy" src="Iced Vanilla Matcha Glow Latte _ Be Well Glow Drinks from the Table.jpg" alt="Iced vanilla matcha"><span class="menu-tag">CREAMY PICK</span></div><div class="menu-info"><h3>Iced Vanilla Matcha</h3><p>Earthy matcha with milk and a hint of vanilla.</p><span class="price">₱150</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="taro milk"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=700&q=90" alt="Taro milk drink"></div><div class="menu-info"><h3>Taro Milk</h3><p>Sweet, creamy taro with a smooth finish.</p><span class="price">₱130</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="strawberry matcha"><div class="menu-image-wrap"><img loading="lazy" src="Strawberry Matcha Latte - A Cozy Kitchen.jpg" alt="Strawberry matcha drink"></div><div class="menu-info"><h3>Strawberry Matcha</h3><p>A pretty layered mix of strawberry and matcha.</p><span class="price">₱155</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="lemon iced tea"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=700&q=90" alt="Lemon iced tea"></div><div class="menu-info"><h3>Lemon Iced Tea</h3><p>Refreshing tea with a bright citrus taste.</p><span class="price">₱95</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="mango smoothie"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=700&q=90" alt="Mango smoothie"></div><div class="menu-info"><h3>Mango Smoothie</h3><p>Fruity, chilled, and blended until smooth.</p><span class="price">₱135</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="cookies and cream frappe"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=700&q=90" alt="Cookies and cream frappe"></div><div class="menu-info"><h3>Cookies & Cream Frappe</h3><p>A creamy blended treat with cookie bits.</p><span class="price">₱150</span></div></div>
+        <div class="menu-card" data-category="noncoffee" data-name="vanilla milkshake"><div class="menu-image-wrap"><img loading="lazy" src="vanilla.jpg" alt="Vanilla milkshake"></div><div class="menu-info"><h3>Vanilla Milkshake</h3><p>Classic vanilla blended into a thick shake.</p><span class="price">₱135</span></div></div>
+        <!-- More desserts and pastries -->
+        <div class="menu-card" data-category="pastry" data-name="red velvet cake"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?auto=format&fit=crop&w=700&q=90" alt="Red velvet cake"><span class="menu-tag">SIGNATURE</span></div><div class="menu-info"><h3>Red Velvet Cake</h3><p>Soft red velvet layers with creamy frosting.</p><span class="price">₱125</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="tiramisu cup"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=700&q=90" alt="Tiramisu dessert cup"></div><div class="menu-info"><h3>Tiramisu Cup</h3><p>Layers of creamy dessert with a cocoa finish.</p><span class="price">₱145</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="strawberry shortcake"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=700&q=90" alt="Strawberry shortcake"></div><div class="menu-info"><h3>Strawberry Shortcake</h3><p>Light cake, whipped cream, and strawberries.</p><span class="price">₱140</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="fudgy brownie"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=700&q=90" alt="Fudgy chocolate brownie"></div><div class="menu-info"><h3>Fudgy Brownie</h3><p>Rich chocolate brownie with a soft center.</p><span class="price">₱75</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="chocolate chip cookie"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=700&q=90" alt="Chocolate chip cookies"></div><div class="menu-info"><h3>Chocolate Chip Cookie</h3><p>Golden cookie loaded with chocolate chips.</p><span class="price">₱60</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="waffles and berries"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=700&q=90" alt="Waffles with berries"></div><div class="menu-info"><h3>Waffles & Berries</h3><p>Warm waffles topped with fruit and sweet syrup.</p><span class="price">₱125</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="cinnamon sugar donuts"><div class="menu-image-wrap"><img loading="lazy" src="Homemade Cinnamon Sugar Donuts Easy Recipe.jpg" alt="Cinnamon sugar donuts"></div><div class="menu-info"><h3>Cinnamon Sugar Donuts</h3><p>Soft donuts dusted with cinnamon sugar.</p><span class="price">₱70</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="lemon loaf cake"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=700&q=90" alt="Lemon loaf cake"></div><div class="menu-info"><h3>Lemon Loaf Cake</h3><p>Moist buttery cake with a fresh lemon flavor.</p><span class="price">₱85</span></div></div>
+        <div class="menu-card" data-category="pastry" data-name="apple pie slice"><div class="menu-image-wrap"><img loading="lazy" src="https://images.unsplash.com/photo-1562007908-17c67e878c88?auto=format&fit=crop&w=700&q=90" alt="Apple pie slice"></div><div class="menu-info"><h3>Apple Pie Slice</h3><p>Warm spiced apples wrapped in flaky pastry.</p><span class="price">₱105</span></div></div>
+        <div class="menu-empty" id="menuEmpty">No menu items found. Try another search. ☕</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: GALLERY -->
+    <section class="slide">
+      <div class="slide-heading">
+        <div class="eyebrow">A peek inside</div>
+        <h2>Our Coffee Moments</h2>
+        <p>Good drinks, warm spaces, and little moments worth enjoying.</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=90" alt="Warm and cozy coffee shop interior"><figcaption class="gallery-caption">Our Cozy Corner<small>Come in and unwind</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=85" alt="Fresh coffee and beans"><figcaption class="gallery-caption">Freshly Brewed<small>Made with care</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=700&q=85" alt="Coffee shop counter"><figcaption class="gallery-caption">The Coffee Bar<small>Your daily ritual</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=700&q=85" alt="Barista preparing a coffee"><figcaption class="gallery-caption">Crafted by Baristas<small>Every cup matters</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=700&q=85" alt="Coffee served on a table"><figcaption class="gallery-caption">Little Coffee Break<small>Pause and enjoy</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=85" alt="Iced latte drink"><figcaption class="gallery-caption">Iced Favorites<small>Cool and refreshing</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=85" alt="Hot coffee in a ceramic cup"><figcaption class="gallery-caption">A Warm Hug<small>In every sip</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=700&q=85" alt="Freshly baked pastries"><figcaption class="gallery-caption">Fresh Pastries<small>Perfect with coffee</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=85" alt="Chocolate cake dessert"><figcaption class="gallery-caption">Sweet Treats<small>A little happiness</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=85" alt="Caramel coffee drink"><figcaption class="gallery-caption">Caramel Moments<small>Sweet, smooth, lovely</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=85" alt="Coffee ready to be served"><figcaption class="gallery-caption">Made for You<small>One cup at a time</small></figcaption></figure>
+        <figure class="gallery-card"><img loading="lazy" src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=700&q=85" alt="Coffee being carefully prepared"><figcaption class="gallery-caption">Slow Mornings<small>Stay a little longer</small></figcaption></figure>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: CONTACT -->
+    <section class="slide">
+      <div class="contact-layout">
+        <div>
+          <div class="eyebrow">We'd love to hear from you</div>
+          <h2>Let's Have a Coffee!</h2>
+          <p>Have a question, suggestion, or just want to say hello? Send us a message.</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div><strong>Location</strong><p>Quezon City, Philippines</p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">🕒</div>
+              <div><strong>Hours</strong><p>Mon – Sun: 8:00 AM – 8:00 PM</p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">✉️</div>
+              <div><strong>Email</strong><p>hello@brewandbloom.com</p></div>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <h3>Send a Message</h3>
+          <input type="text" id="name" placeholder="Your Name" required>
+          <input type="email" id="email" placeholder="Your Email" required>
+          <textarea id="message" placeholder="Write your message..." required></textarea>
+          <button class="btn" type="submit">Send Message →</button>
+          <p id="formMessage" style="margin-top: 10px;"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: DOCUMENTATION -->
+    <section class="slide">
+      <div class="doc-section">
+        <div class="doc-title">DOCUMENTATION</div>
+        <div class="doc-subtitle">with the Business Owner</div>
+        
+        <!-- PALITAN ANG LINK NG PICTURE NIYO DITO -->
+        <img 
+          class="doc-photo" 
+          src="IMG.jpg" 
+          alt="Group photo with business owner"
+        >
+        
+        <div class="doc-names">
+          <div class="doc-student">
+            <div class="doc-name">Maris Palmes</div>
+            <div class="doc-role">Student </div>
+          </div>
+          <div class="doc-student">
+            <div class="doc-name">Diazmine Lei Maranan</div>
+            <div class="doc-role">Student</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="slide-count" id="slideCount">01 / 06</div>
+    <div class="progress">
+      <button class="dot active" data-slide="0"></button>
+      <button class="dot" data-slide="1"></button>
+      <button class="dot" data-slide="2"></button>
+      <button class="dot" data-slide="3"></button>
+      <button class="dot" data-slide="4"></button>
+      <button class="dot" data-slide="5"></button>
+    </div>
+    <div class="slide-buttons">
+      <button id="prevBtn" disabled>← Previous</button>
+      <button id="nextBtn">Next →</button>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const dots = document.querySelectorAll(".dot");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const slideCount = document.getElementById("slideCount");
+    let currentSlide = 0;
+
+    function goToSlide(index) {
+      if (index < 0 || index >= slides.length) return;
+      currentSlide = index;
+      slides.forEach((s, i) => s.classList.toggle("active", i === currentSlide));
+      navLinks.forEach((l, i) => l.classList.toggle("active", i === currentSlide));
+      dots.forEach((d, i) => d.classList.toggle("active", i === currentSlide));
+      slideCount.textContent = String(currentSlide+1).padStart(2,"0") + " / " + String(slides.length).padStart(2,"0");
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.textContent = currentSlide === slides.length-1 ? "Back to Home ↻" : "Next →";
+    }
+
+    nextBtn.addEventListener("click", () => goToSlide(currentSlide === slides.length-1 ? 0 : currentSlide+1));
+    prevBtn.addEventListener("click", () => goToSlide(currentSlide-1));
+    navLinks.forEach(l => l.addEventListener("click", () => goToSlide(Number(l.dataset.slide))));
+    dots.forEach(d => d.addEventListener("click", () => goToSlide(Number(d.dataset.slide))));
+
+    // Menu category filters and live search
+    const menuCards = [...document.querySelectorAll(".menu-card")];
+
+    // Load menu photos without replacing them with an unrelated category photo.
+    document.querySelectorAll(".menu-card img").forEach(img => {
+      img.loading = "eager";
+      img.decoding = "async";
+      img.addEventListener("error", function () {
+        this.alt = this.alt + " (photo could not load)";
+        this.style.background = "linear-gradient(135deg, #f2e3d5, #dce5d3)";
+      });
+    });
+
+    const menuFilters = document.querySelectorAll(".menu-filter");
+    const menuSearch = document.getElementById("menuSearch");
+    const menuEmpty = document.getElementById("menuEmpty");
+    let selectedCategory = "all";
+    function filterMenu() {
+      const term = menuSearch.value.trim().toLowerCase();
+      let visible = 0;
+      menuCards.forEach(card => {
+        const matchesCategory = selectedCategory === "all" || card.dataset.category === selectedCategory;
+        const matchesSearch = card.dataset.name.includes(term) || card.textContent.toLowerCase().includes(term);
+        card.hidden = !(matchesCategory && matchesSearch);
+        if (!card.hidden) visible++;
+      });
+      menuEmpty.classList.toggle("show", visible === 0);
+    }
+    menuFilters.forEach(button => button.addEventListener("click", () => {
+      selectedCategory = button.dataset.category;
+      menuFilters.forEach(item => item.classList.toggle("active", item === button));
+      filterMenu();
+    }));
+    menuSearch.addEventListener("input", filterMenu);
+
+    document.getElementById("contactForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const btn = e.target.querySelector("button");
+      const msg = document.getElementById("formMessage");
+      btn.disabled = true; btn.textContent = "Sending...";
+      setTimeout(() => {
+        msg.style.color = "#3f7048";
+        msg.textContent = "Message sent! Thank you!";
+        e.target.reset(); btn.disabled = false; btn.textContent = "Send Message →";
+      }, 800);
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight") goToSlide(currentSlide === slides.length-1 ? 0 : currentSlide+1);
+      if (e.key === "ArrowLeft") goToSlide(currentSlide-1);
+    });
+  </script>
+</body>
+</html>
